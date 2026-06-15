@@ -32,24 +32,24 @@ $soo_plaintext .= '"level": "user",';
 $soo_plaintext .= '"bio": "I won The Weakest Link"}';
 
 print "Sooty Plaintext\n";
-var_dump ($sooty_plaintext);
+
 $sooty_ciphered = encrypt($sooty_plaintext, $key);
 print "Sooty Ciphertext\n";
-var_dump (bin2hex($sooty_ciphered));
+
 print "\n";
 
 print "Sweep Plaintext\n";
-var_dump ($sweep_plaintext);
+
 $sweep_ciphered = encrypt($sweep_plaintext, $key);
 print "Sweep Ciphertext\n";
-var_dump (bin2hex($sweep_ciphered));
+
 print "\n";
 
 print "Soo Plaintext\n";
-var_dump ($soo_plaintext);
+
 $soo_ciphered = encrypt($soo_plaintext, $key);
 print "Soo Ciphertext\n";
-var_dump (bin2hex($soo_ciphered));
+
 print "\n";
 
 $p1 = substr (bin2hex($sweep_ciphered), 0, 32); // Sweep's username
@@ -62,32 +62,32 @@ $c = hex2bin($p1 . $p2 . $p3 . $p4);
 print "Breaking the tokens down into blocks\n";
 
 print "Block 1, Sweep's username\n";
-var_dump ($p1);
+
 
 print "Block 2, Soo's expiry time\n";
-var_dump ($p2);
+
 
 print "Block 3, Sooty's admin status\n";
-var_dump ($p3);
+
 
 print "Block 4, Finish off the block\n";
-var_dump ($p4);
+
 
 print "\n";
 print "New token:\n";
-var_dump (bin2hex($c));
+print bin2hex($c) . "\n";
 print "\n";
 
 $hacked_deciphered = decrypt($c, $key);
 print "Decrypted after swapping blocks around:\n";
-var_dump ($hacked_deciphered);
+print $hacked_deciphered . "\n";
 $user = json_decode ($hacked_deciphered);
 if ($user === null) {
 	throw new Exception ("Could not decode JSON object.");
 }
 print "\n";
 print "Converted to a JSON object:\n";
-var_dump ($user);
+print json_encode($user) . "\n";
 
 if ($user->user == "sweep" && $user->ex > time() && $user->level == "admin") {
 	print "Welcome administrator Sweep\n";
